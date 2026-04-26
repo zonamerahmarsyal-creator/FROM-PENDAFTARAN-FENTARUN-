@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Pendaftaran Event</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color: #fff;
+    margin: 0;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+}
+
+.banner {
+    background: url('banner.jpg') center/cover;
+    height: 180px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.countdown {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #00ffcc;
+}
+
+.form-step {
+    display: none;
+    background: rgba(255,255,255,0.08);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.form-step.active {
+    display: block;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    background: #00c9a7;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #00a98b;
+}
+
+img {
+    width: 100%;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="banner"></div>
+
+<h1>Form Pendaftaran Event</h1>
+
+<div class="countdown" id="countdown"></div>
+
+<!-- PAGE 1 -->
+<div class="form-step active">
+    <h2>Data Peserta</h2>
+
+    <input type="text" placeholder="Nama Lengkap" required>
+    <input type="date" required>
+    <input type="text" placeholder="NIK" required>
+    <input type="email" placeholder="Email" required>
+    <input type="tel" placeholder="No. WhatsApp" required>
+    <input type="text" placeholder="Alamat Lengkap" required>
+    <input type="text" placeholder="Nama BIB" required>
+
+    <button onclick="nextStep()">Lanjut</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="form-step">
+    <h2>Category Perlombaan</h2>
+
+    <label><input type="radio" name="category" required> 5K Pelajar - Rp175.000</label>
+    <label><input type="radio" name="category"> 5K Umum - Rp200.000</label>
+    <label><input type="radio" name="category"> 10K - Rp275.000</label>
+    <label><input type="radio" name="category"> 21K - Rp350.000</label>
+
+    <h3>Size Jersey</h3>
+
+    <img src="sizechart.png" alt="Size Chart">
+
+    <select required>
+        <option value="">Pilih Size</option>
+        <option>XS</option>
+        <option>S</option>
+        <option>M</option>
+        <option>L</option>
+        <option>XL</option>
+        <option>XXL</option>
+        <option>XXXL</option>
+    </select>
+
+    <button onclick="nextStep()">Lanjut</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="form-step">
+    <h2>Metode Pembayaran</h2>
+
+    <p>Scan QRIS sesuai nominal</p>
+
+    <!-- GANTI DENGAN QRIS KAMU -->
+    <img src="qris.png" alt="QRIS">
+
+    <label>Upload Bukti Pembayaran</label>
+    <input type="file" required>
+
+    <label>
+        <input type="checkbox" required>
+        Saya siap mengikuti semua aturan yang berlaku
+    </label>
+
+    <button onclick="nextStep()">Kirim</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="form-step">
+    <h2>Terima Kasih!</h2>
+
+    <p>Pendaftaran berhasil.</p>
+    <p>Kami akan kirimkan konfirmasi melalui Email.</p>
+
+    <button onclick="location.reload()">Kembali ke Beranda</button>
+</div>
+
+</div>
+
+<script>
+let step = 0;
+const steps = document.querySelectorAll(".form-step");
+
+// VALIDASI
+function validateStep(currentStep) {
+    const inputs = steps[currentStep].querySelectorAll("input, select");
+    for (let input of inputs) {
+        if (!input.checkValidity()) {
+            input.reportValidity();
+            return false;
+        }
+    }
+    return true;
+}
+
+// NEXT STEP
+function nextStep() {
+    if (!validateStep(step)) return;
+
+    steps[step].classList.remove("active");
+    step++;
+    steps[step].classList.add("active");
+}
+
+// COUNTDOWN 10 MENIT
+let duration = 10 * 60; // 10 menit
+
+let timer = setInterval(() => {
+    let minutes = Math.floor(duration / 60);
+    let seconds = duration % 60;
+
+    document.getElementById("countdown").innerHTML =
+        "Sisa waktu pengisian: " + minutes + " menit " + seconds + " detik";
+
+    if (--duration < 0) {
+        clearInterval(timer);
+        alert("Waktu habis! Form ditutup.");
+        location.reload();
+    }
+}, 1000);
+
+</script>
+
+</body>
+</html>
